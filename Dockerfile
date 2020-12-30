@@ -1,12 +1,8 @@
-FROM registry.redhat.io/ubi8/ubi-minimal:latest
-COPY Pipfile Pipfile.lock /
-RUN microdnf install python36 python3-pip && \
-    pip-3 install --no-cache-dir pipenv && \
-    pipenv lock --requirements > requirements.txt && \
-    pip-3 install --no-cache-dir -r requirements.txt && \
-    mkdir /app && \
-    chmod g+rwX /app && \
-    microdnf clean all
-WORKDIR /app
-COPY . /app
-CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:8080", "app:app"]
+FROM registry.redhat.io/ubi8/python-38
+COPY Pipfile Pipfile.lock manage.py run.py ${APP_ROOT}/src/
+COPY ros ${APP_ROOT}/src/ros/
+COPY migrations ${APP_ROOT}/src/migrations/
+RUN pip install --upgrade pip && \
+    pip install pipenv && \
+    pipenv install --system --deploy --ignore-pipfile
+CMD bash -c 'python manage.py db upgrade && python run.py'
