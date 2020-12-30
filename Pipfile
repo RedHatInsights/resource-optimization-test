@@ -7,8 +7,15 @@ verify_ssl = true
 flake8 = "*"
 
 [packages]
-flask = "*"
-gunicorn = "*"
+Flask = "~=1.1.2"
+gunicorn = "~=20.0.4"
+flask-restful = "~=0.3.8"
+Flask-SQLAlchemy = "~=2.4.4"
+psycopg2-binary = "~=2.8.6"
+flask-migrate = "~=2.5.3"
+flask-script = "~=2.0.6"
+flask-cors = "~=3.0.9"
+confluent-kafka = "~=1.5.0"
 
 [requires]
-python_version = "3.6"
+python_version = "3.8"
